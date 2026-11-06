@@ -2,12 +2,13 @@
   lib,
   fetchFromGitHub,
   kingfisher,
+  nix-update-script,
   python3Packages,
 }:
 
 python3Packages.buildPythonApplication (finalAttrs: {
   pname = "prowler";
-  version = "5.39.0";
+  version = "5.47.0";
   pyproject = true;
 
   __structuredAttrs = true;
@@ -16,8 +17,13 @@ python3Packages.buildPythonApplication (finalAttrs: {
     owner = "prowler-cloud";
     repo = "prowler";
     tag = finalAttrs.version;
-    hash = "sha256-luLTaOHRjqc5FhHCwpCjUXJqqYeqWjQt21MrMKqJgyE=";
+    hash = "sha256-vY/ZwWP1UVF2MdnfwQdu6SVhHh9ehOdYvak0FYv8jrI=";
   };
+
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail "hatchling==1.32.0" "hatchling"
+  '';
 
   pythonRelaxDeps = true;
 
@@ -45,6 +51,7 @@ python3Packages.buildPythonApplication (finalAttrs: {
     azure-mgmt-apimanagement
     azure-mgmt-applicationinsights
     azure-mgmt-authorization
+    azure-mgmt-cognitiveservices
     azure-mgmt-compute
     azure-mgmt-containerregistry
     azure-mgmt-containerservice
@@ -89,6 +96,7 @@ python3Packages.buildPythonApplication (finalAttrs: {
     huaweicloudsdkkms
     huaweicloudsdkobs
     huaweicloudsdkrds
+    huaweicloudsdksmn
     huaweicloudsdkvpc
     huaweicloudsdkwaf
     jsonschema
@@ -116,9 +124,12 @@ python3Packages.buildPythonApplication (finalAttrs: {
     stackit-iaas
     stackit-objectstorage
     stackit-resourcemanager
+    stackit-ske
     tabulate
+    truststore
     tzlocal
     uuid6
+    zstandard
   ];
 
   postFixup = ''
@@ -126,6 +137,8 @@ python3Packages.buildPythonApplication (finalAttrs: {
   '';
 
   pythonImportsCheck = [ "prowler" ];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Security tool to perform Cloud Security best practices assessments";

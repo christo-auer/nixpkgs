@@ -36,7 +36,7 @@ let
 
   pname = "librewolf-bin-unwrapped";
 
-  version = "153.0.4-1";
+  version = "159.0-1";
 in
 
 stdenv.mkDerivation {
@@ -46,8 +46,8 @@ stdenv.mkDerivation {
     url = "https://codeberg.org/api/packages/librewolf/generic/librewolf/${version}/librewolf-${version}-${arch}-package.tar.xz";
     hash =
       {
-        x86_64-linux = "sha256-KPv44+F1ofq7L2Ja6XM4AtIutICSfJz6R7XvkvlH5Y0=";
-        aarch64-linux = "sha256-OVR4ivYSdCKIGKYf80FL9WKSFIB6eHura/rMv9Z6asE=";
+        x86_64-linux = "sha256-p5ajyA4MVlBIeWo0K46vTRKGCBGcdEfEPstUVcYy9Jw=";
+        aarch64-linux = "sha256-vwocJ1HGrBDCB3sOCcpPw81uCTbCXbHI9ZGz9zYgb1U=";
       }
       .${stdenv.hostPlatform.system} or throwSystem;
   };
@@ -96,8 +96,8 @@ stdenv.mkDerivation {
     inherit binaryName;
     applicationName = "LibreWolf";
     libName = "librewolf-bin-${version}";
-    ffmpegSupport = true;
-    gssSupport = true;
+    withFFmpeg = true;
+    withGSSAPI = true;
     gtk3 = gtk3;
     updateScript = ./update.sh;
   };
@@ -109,7 +109,6 @@ stdenv.mkDerivation {
     maintainers = with lib.maintainers; [
       azahi
       eclairevoyant
-      dwrege
     ];
     platforms = builtins.attrNames mozillaPlatforms;
     mainProgram = "librewolf";

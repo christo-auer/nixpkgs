@@ -77,7 +77,10 @@ buildDotnetModule (finalAttrs: {
   '';
 
   makeWrapperArgs = [
-    "--prefix PATH : ${lib.makeBinPath finalAttrs.runtimeInputs}"
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath finalAttrs.runtimeInputs)
   ];
 
   postInstall = ''
@@ -188,6 +191,7 @@ buildDotnetModule (finalAttrs: {
     app = finalAttrs.finalPackage.overrideAttrs {
       pname = "${finalAttrs.pname}-tested";
       doCheck = true;
+      passthru.tests = { };
     };
   };
 

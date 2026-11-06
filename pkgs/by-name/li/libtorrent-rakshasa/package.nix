@@ -14,15 +14,17 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "libtorrent-rakshasa";
-  version = "0.16.20";
+  version = "0.16.27";
 
   __structuredAttrs = true;
 
+  # Updated together with rtorrent through rtorrent's updateScript.
+  # nixpkgs-update: no auto update
   src = fetchFromGitHub {
     owner = "rakshasa";
     repo = "libtorrent";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-PEldSXGOFCOa1zo/9wT3efUvf3ZZ9gqZLqioXOdFnt0=";
+    hash = "sha256-m7nQb02VvYneprCW3X5Qg27NWw33DihrKxA7nCjq5DI=";
   };
 
   strictDeps = true;

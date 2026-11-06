@@ -9,11 +9,11 @@
 }:
 
 let
-  beamPackages = beam_minimal.packages.erlang_27.extend (
-    self: super: {
-      elixir = self.elixir_1_17;
-      rebar3 = self.rebar3WithPlugins {
-        plugins = with self; [ pc ];
+  beamPackages = beam_minimal.packages.erlang_27.overrideScope (
+    final: prev: {
+      elixir = final.elixir_1_17;
+      rebar3 = final.rebar3WithPlugins {
+        plugins = with final; [ pc ];
       };
     }
   );
@@ -92,7 +92,7 @@ beamPackages.mixRelease (finalAttrs: {
     homepage = "https://akkoma.social";
     changelog = "https://akkoma.dev/AkkomaGang/akkoma/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.agpl3Only;
-    maintainers = with lib.maintainers; [ mvs ];
+    maintainers = with lib.maintainers; [ yuka ];
     platforms = lib.platforms.unix;
   };
 })

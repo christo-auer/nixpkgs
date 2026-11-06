@@ -3,9 +3,18 @@
   fetchFromGitHub,
   python3Packages,
   tesseract,
+  writableTmpDirAsHomeHook,
 }:
 
-python3Packages.buildPythonApplication rec {
+let
+  pythonPackages = python3Packages.overrideScope (
+    final: prev: {
+      # Necessary until fastmcp works with mcp 2.x
+      mcp = final.mcp_1;
+    }
+  );
+in
+pythonPackages.buildPythonApplication rec {
   pname = "pdf-mcp";
   version = "1.21.0";
   pyproject = true;
@@ -18,7 +27,7 @@ python3Packages.buildPythonApplication rec {
     hash = "sha256-/CuVdfkJkc95JkZZZMA5euvdysdPObRcww+zImhCY5M=";
   };
 
-  build-system = [ python3Packages.hatchling ];
+  build-system = [ pythonPackages.hatchling ];
 
   pythonRelaxDeps = [
     "click"
@@ -27,7 +36,7 @@ python3Packages.buildPythonApplication rec {
     "pydantic-settings"
   ];
 
-  dependencies = with python3Packages; [
+  dependencies = with pythonPackages; [
     click
     fastmcp
     httpx
@@ -52,16 +61,13 @@ python3Packages.buildPythonApplication rec {
 
   nativeCheckInputs = [
     tesseract
+    writableTmpDirAsHomeHook
   ]
-  ++ (with python3Packages; [
+  ++ (with pythonPackages; [
     pytestCheckHook
     pytest-asyncio
     pillow
   ]);
-
-  preCheck = ''
-    export HOME=$(mktemp -d)
-  '';
 
   # needs LLM API
   disabledTestPaths = [

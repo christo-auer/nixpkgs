@@ -21,9 +21,16 @@
 }:
 
 let
-  version = "1.4.5";
+  pythonPackages = python3Packages.overrideScope (
+    final: prev: {
+      # Necessary until newelle works with mcp 2.x
+      mcp = final.mcp_1;
+    }
+  );
+
+  version = "1.5.0";
 in
-python3Packages.buildPythonApplication {
+pythonPackages.buildPythonApplication {
   pname = "newelle";
   inherit version;
   pyproject = false; # uses meson
@@ -32,7 +39,7 @@ python3Packages.buildPythonApplication {
     owner = "qwersyk";
     repo = "Newelle";
     tag = version;
-    hash = "sha256-GcNAwrk5y6F0BgRy69nRePkX4WoYviWsB+8X/+N5QwE=";
+    hash = "sha256-P+bwcqrF9BTKFb47vVBO1GzFaqb6zMpaeYlI2g9rhX4=";
   };
 
   postPatch = ''
@@ -58,7 +65,7 @@ python3Packages.buildPythonApplication {
     glib-networking
   ];
 
-  dependencies = with python3Packages; [
+  dependencies = with pythonPackages; [
     pygobject3
     libxml2
     cssselect
@@ -81,23 +88,25 @@ python3Packages.buildPythonApplication {
     mcp
   ];
 
-  strictDeps = true;
-
   postInstallCheck = ''
     mesonCheckPhase
   '';
 
   dontWrapGApps = true;
 
+  preFixup = ''
+    makeWrapperArgs+=("''${gappsWrapperArgs[@]}")
+  '';
+
   makeWrapperArgs = [
-    "\${gappsWrapperArgs[@]}"
-    "--prefix PATH : ${
-      lib.makeBinPath [
-        lsb-release
-        bash
-        ffmpeg
-      ]
-    }"
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath [
+      lsb-release
+      bash
+      ffmpeg
+    ])
   ];
 
   passthru.updateScript = nix-update-script { };

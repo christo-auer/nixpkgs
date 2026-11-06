@@ -7,14 +7,14 @@
 }:
 python3Packages.buildPythonApplication (finalAttrs: {
   pname = "mackup";
-  version = "0.11.1";
+  version = "0.11.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "lra";
     repo = "mackup";
     rev = "${finalAttrs.version}";
-    hash = "sha256-qr/+Ot2mGRn/uZ2h6mOoNKS0Oeik0mBgpV2Kt3Lc6yg=";
+    hash = "sha256-+pdeG3uoNC3LCTyxWnBZ8U1pDIMKpws/Y62VrLtNghY=";
   };
 
   postPatch = ''
@@ -38,7 +38,7 @@ python3Packages.buildPythonApplication (finalAttrs: {
   meta = {
     description = "Tool to keep your application settings in sync (OS X/Linux)";
     changelog = "https://github.com/lra/mackup/releases/tag/${finalAttrs.version}";
-    license = lib.licenses.agpl3Only;
+    license = lib.licenses.gpl3Plus;
     homepage = "https://github.com/lra/mackup";
     maintainers = with lib.maintainers; [ luftmensch-luftmensch ];
     mainProgram = "mackup";

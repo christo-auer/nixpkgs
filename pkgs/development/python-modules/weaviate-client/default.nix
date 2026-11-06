@@ -30,7 +30,7 @@
 
 buildPythonPackage rec {
   pname = "weaviate-client";
-  version = "4.23.0";
+  version = "4.23.1";
   pyproject = true;
 
   disabled = pythonOlder "3.12";
@@ -39,7 +39,7 @@ buildPythonPackage rec {
     owner = "weaviate";
     repo = "weaviate-python-client";
     tag = "v${version}";
-    hash = "sha256-kvuztqzhI2BNSBCnuuKGF32aNcQeE9gXT1yoZP8zL+k=";
+    hash = "sha256-9vnGApuYJTzTeOufB0/3ONPaMMfgq2t4NxpmqyYDIhg=";
   };
 
   pythonRelaxDeps = [
@@ -115,7 +115,7 @@ buildPythonPackage rec {
     description = "Python native client for easy interaction with a Weaviate instance";
     homepage = "https://github.com/weaviate/weaviate-python-client";
     changelog = "https://github.com/weaviate/weaviate-python-client/releases/tag/${src.tag}";
-    license = lib.licenses.mit;
+    license = lib.licenses.bsd3;
     maintainers = with lib.maintainers; [ happysalada ];
   };
 }

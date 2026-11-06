@@ -25,14 +25,14 @@
 }:
 buildPythonPackage rec {
   pname = "curl-cffi";
-  version = "0.15.0";
+  version = "0.16.3";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "lexiforest";
     repo = "curl_cffi";
     tag = "v${version}";
-    hash = "sha256-I8rQj28IvLD7HWuog46E0dLFgnWSA6oE4Jyn9Flr7mQ=";
+    hash = "sha256-KagVuHhsHmA5/CY/1y5GLOFXx2ETPud6xk2vn4sG1hI=";
   };
 
   patches = [ ./use-system-libs.patch ];
@@ -91,13 +91,6 @@ buildPythonPackage rec {
     "tests/unittest/test_websockets.py::on_message"
     "tests/unittest/test_websockets.py::test_on_data_callback"
     "tests/unittest/test_websockets.py::test_hello_twice_async"
-
-    # Fails on newer versions of http3
-    # remove once 0.16.0 is merged
-    "tests/unittest/test_async_session.py::test_verify"
-    "tests/unittest/test_curl.py::test_verify"
-    "tests/unittest/test_requests.py::test_verify"
-    "tests/unittest/test_requests.py::test_delete_cookies"
   ];
 
   disabledTests = [

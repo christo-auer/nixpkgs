@@ -5,9 +5,17 @@
   nix-update-script,
 }:
 
-python3Packages.buildPythonApplication (finalAttrs: {
+let
+  pythonPackages = python3Packages.overrideScope (
+    final: prev: {
+      # Necessary until posthog works with mcp 2.x
+      mcp = final.mcp_1;
+    }
+  );
+in
+pythonPackages.buildPythonApplication (finalAttrs: {
   pname = "adscan";
-  version = "11.1.0";
+  version = "13.2.0";
   pyproject = true;
 
   __structuredAttrs = true;
@@ -16,14 +24,14 @@ python3Packages.buildPythonApplication (finalAttrs: {
     owner = "ADScanPro";
     repo = "adscan";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-GMvuCdr9gA3cs5L31PHHls5uHos7VdjS9XblM6F1Z3I=";
+    hash = "sha256-5sMoN+aH+u9Fp+AWorhrm4TlKaIWTwjVhuvO33SnMGg=";
   };
 
   pythonRelaxDeps = [ "credsweeper" ];
 
-  build-system = with python3Packages; [ setuptools ];
+  build-system = with pythonPackages; [ setuptools ];
 
-  dependencies = with python3Packages; [
+  dependencies = with pythonPackages; [
     aardwolf
     aiosmb
     badldap

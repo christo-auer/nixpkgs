@@ -18,6 +18,7 @@
   cups,
   libdrm,
   gdk-pixbuf,
+  musl,
   nss,
   nspr,
   libxrandr,
@@ -32,7 +33,7 @@
   libxkbcommon,
   libgbm,
   vulkan-loader,
-  systemd,
+  systemdLibs,
   libGL,
   krb5,
   unixodbc,
@@ -40,7 +41,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "beekeeper-studio";
-  version = "6.0.0";
+  version = "6.2.1";
 
   src =
     let
@@ -54,9 +55,9 @@ stdenv.mkDerivation (finalAttrs: {
     fetchurl {
       url = "https://github.com/beekeeper-studio/beekeeper-studio/releases/download/v${finalAttrs.version}/${asset}";
       hash = selectSystem {
-        x86_64-linux = "sha256-mTS5elz54AbbYF6AtPaeZvbR7ysB6a6iu+lbaTrwv5k=";
-        aarch64-linux = "sha256-KSz60oSR5UcVM5p8swRqBCZknGob7/MEMtAI2UmN2Q0=";
-        aarch64-darwin = "sha256-71xe4uWRb83WgvZvwqv52tubZ+8CKKuU1/zQnV0aSGw=";
+        x86_64-linux = "sha256-QIfiaV9flSmRHryUaLABJNbDwwj6fZIGG3rWz7fiESI=";
+        aarch64-linux = "sha256-Iwb6y49jJMnL+T9X+mUim4fg52GDSE8I/NzZ5mG4XUU=";
+        aarch64-darwin = "sha256-1r4ZyXsW07NaskqhkBfSU1b8IHOnC/GVJcNcDm7tS1k=";
       };
     };
 
@@ -90,6 +91,7 @@ stdenv.mkDerivation (finalAttrs: {
     cups
     libdrm
     gdk-pixbuf
+    musl
     nss
     nspr
     alsa-lib
@@ -100,7 +102,7 @@ stdenv.mkDerivation (finalAttrs: {
     unixodbc
   ];
 
-  runtimeDependencies = lib.optionals stdenv.hostPlatform.isLinux (lib.getLib systemd);
+  runtimeDependencies = lib.optionals stdenv.hostPlatform.isLinux (lib.getLib systemdLibs);
 
   installPhase = ''
     runHook preInstall
@@ -146,7 +148,7 @@ stdenv.mkDerivation (finalAttrs: {
     description = "Modern and easy to use SQL client for MySQL, Postgres, SQLite, SQL Server, and more";
     homepage = "https://www.beekeeperstudio.io";
     changelog = "https://github.com/beekeeper-studio/beekeeper-studio/releases/tag/v${finalAttrs.version}";
-    license = lib.licenses.gpl3Only;
+    license = lib.licenses.gpl3Plus;
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
     mainProgram = "beekeeper-studio";
     maintainers = with lib.maintainers; [

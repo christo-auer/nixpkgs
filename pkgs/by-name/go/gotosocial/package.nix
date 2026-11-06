@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  buildGo125Module,
+  buildGoModule,
   fetchFromCodeberg,
   fetchYarnDeps,
   nodejs,
@@ -21,15 +21,17 @@
   # See: https://docs.gotosocial.org/en/latest/advanced/builds/nowasm/
   withWasm ? stdenv.hostPlatform.isx86_64 || stdenv.hostPlatform.isAarch64,
 }:
-buildGo125Module (finalAttrs: {
+buildGoModule (finalAttrs: {
   pname = "gotosocial";
-  version = "0.22.1";
+  version = "0.22.3";
+
+  __structuredAttrs = true;
 
   src = fetchFromCodeberg {
     owner = "superseriousbusiness";
     repo = "gotosocial";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-fRMQISOYf0rGcnNBpdlDeYWO0vvVwW0UPXdeT1y0+Ec=";
+    hash = "sha256-kDFfM47FQzZzkMUEPnYFi0Frm2DNL240O3T4qggYn8I=";
   };
 
   vendorHash = null;
@@ -123,6 +125,7 @@ buildGo125Module (finalAttrs: {
       blakesmith
       cherrykitten
     ];
+    teams = with lib.teams; [ ngi ];
     license = lib.licenses.agpl3Only;
   };
 })
